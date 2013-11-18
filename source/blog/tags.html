@@ -4,10 +4,12 @@ title: Tags
 use:
     - posts_tags
 ---
-<h2>Tags</h2>
-
+<header class="page-header">
+    <h1>Tags</h1>
+</header>
 <div>
 {% for tag,posts in data.posts_tags %}
-<a href="{{ site.url }}/blog/tags/{{ tag|url_encode(true) }}">{{ tag }}</a>
+<a href="{{ site.url }}/blog/tags/{{ tag|url_encode(true) }}"><span class="glyphicon glyphicon-tag"></span> {{ tag }} <span class="badge">{{posts | length}}</span></a>
+
 {% endfor %}
 </div>

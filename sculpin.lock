@@ -3,24 +3,24 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "d09e890f71617242e11482778c2b69d8",
+    "hash": "670387f55156ee5b515538dc182bc81b",
     "packages": [
         {
             "name": "components/bootstrap",
-            "version": "2.3.2",
+            "version": "3.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/components/bootstrap.git",
-                "reference": "4e517c991623b3bd913e2becd44831b2c9b0be90"
+                "reference": "6794b6773c275175e92f89c94fe7880c7047593d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/components/bootstrap/zipball/4e517c991623b3bd913e2becd44831b2c9b0be90",
-                "reference": "4e517c991623b3bd913e2becd44831b2c9b0be90",
+                "url": "https://api.github.com/repos/components/bootstrap/zipball/6794b6773c275175e92f89c94fe7880c7047593d",
+                "reference": "6794b6773c275175e92f89c94fe7880c7047593d",
                 "shasum": ""
             },
             "require": {
-                "components/jquery": "*"
+                "components/jquery": ">=1.9"
             },
             "suggest": {
                 "components/bootstrap-default": "Provide a theme for Bootstrap as components/bootstrap only provides the CSS as file assets"
@@ -34,7 +34,8 @@
                     "files": [
                         "js/bootstrap.min.js",
                         "css/*.css",
-                        "img/*.png"
+                        "fonts/*",
+                        "less/*"
                     ],
                     "shim": {
                         "deps": [
@@ -58,7 +59,7 @@
                 "bootstrap",
                 "css"
             ],
-            "time": "2013-07-18 20:01:48"
+            "time": "2013-11-15 13:06:12"
         },
         {
             "name": "components/highlightjs",
@@ -223,16 +224,16 @@
         },
         {
             "name": "robloach/component-installer",
-            "version": "0.0.11",
+            "version": "0.0.12",
             "source": {
                 "type": "git",
                 "url": "https://github.com/RobLoach/component-installer.git",
-                "reference": "f8bbde8d027eed4d9bcc09ebc2d04d9e0df94b5b"
+                "reference": "1864f25db21fc173e02a359f646acd596c1b0460"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/RobLoach/component-installer/zipball/f8bbde8d027eed4d9bcc09ebc2d04d9e0df94b5b",
-                "reference": "f8bbde8d027eed4d9bcc09ebc2d04d9e0df94b5b",
+                "url": "https://api.github.com/repos/RobLoach/component-installer/zipball/1864f25db21fc173e02a359f646acd596c1b0460",
+                "reference": "1864f25db21fc173e02a359f646acd596c1b0460",
                 "shasum": ""
             },
             "require": {
@@ -263,7 +264,7 @@
                 }
             ],
             "description": "Allows installation of Components via Composer.",
-            "time": "2013-05-10 04:14:46"
+            "time": "2013-08-31 23:46:48"
         }
     ],
     "packages-dev": [

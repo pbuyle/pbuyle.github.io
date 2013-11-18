@@ -1,0 +1,29 @@
+---
+permalink: feed.xml
+use:
+  - posts
+---
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title><![CDATA[{{ site.title }}]]></title>
+        <description><![CDATA[{{ site.description }}]]></description>
+        <link>{{ site.url }}</link>
+        <atom:link href="{{ site.url }}/feed.xml" rel="self" type="application/rss+xml" />
+        {% for post in data.posts %}
+        <item>
+            <title>{{ post.title }}</title>
+            <description>{{ post.content }}</description>
+            <pubDate>{{ post.date }}</pubDate>
+            <link>{{ site.url }}{{ post.url }}</link>
+            <guid isPermaLink="true">{{ site.url }}{{ post.url }}</guid>
+            {% for category in post.meta.categories %}
+            <category domain="{{ site.url }}/blog/categories">>{{ category }}</category>
+            {% endfor %}
+            {% for tag in post.meta.tags %}
+            <category domain="{{ site.url }}/blog/tags">>{{ tag }}</category>
+            {% endfor %}
+        </item>
+        {% endfor %}
+    </channel>
+</rss>

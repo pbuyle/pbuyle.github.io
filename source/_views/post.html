@@ -1,23 +1,15 @@
 {% extends "default" %}
 {% block content_wrapper %}
     <article>
-        <header>
-            <h2>{{ page.title }} <small>post</small></h2>
+        <header class="page-header">
+            <h1>{{ page.title }} <small><span class="glyphicon glyphicon-file"></span>post</small></h1>
         </header>
         <div>
             {{ page.blocks.content|raw }}
         </div>
-        {% if page.categories %}
-            <p class="categories">
-            Categories:
-            {% for category in page.categories %}
-            <a href="{{ site.url }}/blog/categories/{{ category|url_encode(true) }}">{{ category }}</a>{% if not loop.last %}, {% endif %}
-            {% endfor %}
-            </p>
-        {% endif %}
         {% if page.tags %}
             <p class="tags">
-            Tags:
+            <span class="glyphicon glyphicon-tags"></span>
             {% for tag in page.tags %}
             <a href="{{ site.url }}/blog/tags/{{ tag|url_encode(true) }}">{{ tag }}</a>{% if not loop.last %}, {% endif %}
             {% endfor %}

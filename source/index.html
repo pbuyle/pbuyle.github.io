@@ -3,13 +3,18 @@ layout: default
 title: Home
 generator: pagination
 pagination:
-    max_per_page: 3
+    max_per_page: 10
 use:
     - posts
 ---
+
+<div class="jumbotron">
+    <h1>{{site.title}}</h1>
+</div>
+
 {% for post in page.pagination.items %}
     <article>
-        <header>
+        <header class="page-header">
             <h2><a href="{{ site.url }}{{ post.url }}">{{ post.title }}</a></h2>
         </header>
         <div>
