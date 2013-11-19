@@ -1,3 +1,10 @@
 body {
     padding-top: 100px;
 }
+
+footer {
+    margin-top: 2em;
+    padding-top: 1em;
+    border-top: solid 1px #eee;
+    font-size: smaller;
+}
