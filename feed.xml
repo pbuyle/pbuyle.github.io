@@ -6,6 +6,117 @@
         <link>http://pbuyle.github.io</link>
         <atom:link href="http://pbuyle.github.io/feed.xml" rel="self" type="application/rss+xml" />
                 <item>
+            <title>JavaScript, jQuery and DOM Ready in Drupal 7</title>
+            <description>&lt;p&gt;&lt;strong&gt;tl;dr&lt;/strong&gt;: JavaScript code to process elements on page load on a Drupal 7 site should looks like this:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;javascript&quot;&gt;(function($) {
+  Drupal.behaviors.doSomething = {
+    attach: function(context, settings) {
+      $(&#039;div.something&#039;, context).once(&#039;do-something&#039;).doSomething({
+        param1: settings.somethingl.param,
+        param2: &#039;something else&#039;
+      });
+    }
+  }
+})(jQuery);
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Drupal 7 provides jQuery in the &lt;a href=&quot;http://api.jquery.com/jQuery.noConflict/&quot;&gt;no-conflict mode&lt;/a&gt;, which means that &lt;code&gt;$&lt;/code&gt; is
+not the jQuery object/namespace. This should not be an issue with properly written jQuery plugins that follow
+&lt;a href=&quot;http://docs.jquery.com/Plugins/Authoring&quot;&gt;jQuery&#039;s plugins authoring guidelines&lt;/a&gt;. This is however an issue for code
+snippets mindlessly copy/pasted from random web pages. Most of them expect &lt;code&gt;$&lt;/code&gt; to be the jQuery namespace and will not
+work within a Drupal page. This can be easily solved by wrapping theses snippets in immediately invoked anonymous
+function that will alias the jQuery namespace to &lt;code&gt;$&lt;/code&gt;:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;javascript&quot;&gt;(function($) {
+    // Here $ is the jQuery namespace.
+})(jQuery);
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Usually, JavaScript code that needs to run at page load, is also wrapped in a function passed as argument to &lt;code&gt;jQuery()&lt;/code&gt;
+or &lt;code&gt;jQuery(document).ready()&lt;/code&gt;:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;javascript&quot;&gt;$(function() {
+  // Code here is executed when the DOM is loaded.
+});
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;When combined, these two patterns are perfectly fine, even within Drupal. However if content (ie. new DOM elements) is
+added to the page after page load (AJAX calls, content generated from JavaScript, etc.) the code in such functions will
+never be able to process the added elements. Or if some portion of the content is removed or moved across the page, the
+code will have no option to unregistered event handlers or update information about the already processed elements.
+Drupal provides an API for this called &lt;a href=&quot;http://drupal.org/node/756722#behaviors&quot;&gt;behaviors&lt;/a&gt;. Using behavior is not
+required, but strongly recommended as a best practice to avoid future headaches (when code written six months ago starts
+behaving strangely when a contrib module is added to the project). A behavior is written like this:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;javascript&quot;&gt;Drupal.behaviors.behaviorName = {
+  attach: function (context, settings) {
+    // Do something.
+  },
+  detach: function (context, settings, trigger) {
+    // Undo something.
+  }
+};
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;The &lt;code&gt;attach&lt;/code&gt; function of all registered behaviors (all properties of the &lt;code&gt;Drupal.behaviors&lt;/code&gt; object) will be invoked
+when behavior should be added to elements, either when the DOM is ready (ie. page load) and when elements are added to
+the DOM. The &lt;code&gt;detach&lt;/code&gt; function will be called when behaviors should be detached from elements: just before elements
+are removed from the DOM, moved in the DOM or a form is submitted. The &lt;code&gt;context&lt;/code&gt; parameter will always be a parent of
+the added elements, the single added/removed/moved/submitted element itself or the whole &lt;code&gt;document&lt;/code&gt; element. The
+&lt;code&gt;settings&lt;/code&gt; parameters will be the settings for the &lt;code&gt;context&lt;/code&gt;, usually the &lt;code&gt;Drupal.settings&lt;/code&gt; object as set by calls
+to &lt;a href=&quot;http://api.drupal.org/api/drupal/includes!common.inc/function/drupal_add_js/7&quot;&gt;&lt;code&gt;drupal_add_js()&lt;/code&gt;&lt;/a&gt; from PHP. For
+&lt;code&gt;detach&lt;/code&gt;, the &lt;code&gt;trigger&lt;/code&gt; parameter will contains the kind of event that triggered the call: &lt;code&gt;&#039;unload&#039;&lt;/code&gt; (elements
+removed), &lt;code&gt;&#039;move&#039;&lt;/code&gt; (elements moved) or &lt;code&gt;&#039;serialize&#039;&lt;/code&gt; (form is being submitted).&lt;/p&gt;
+
+&lt;p&gt;The &lt;code&gt;attach&lt;/code&gt; (and &lt;code&gt;detach&lt;/code&gt;) functions of a behavior can be used multiple time over the same portion of the DOM tree.
+So the same element could be processed multiple time by the same code. It is up to the code itself to avoid processing
+(ie. binding event handlers, altering CSS styles, etc.) multiple times for the same elements. The easiest solution for
+this is to use the &lt;a href=&quot;http://plugins.jquery.com/once/&quot;&gt;jQuery Once&lt;/a&gt; plugin (which
+&lt;a href=&quot;http://drupal.org/node/756722#jquery-once&quot;&gt;is provided by Drupal 7&lt;/a&gt;) like this:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;javascript&quot;&gt;$(selector).once(&#039;behavior-name&#039;).doSomething();
+$(selector).once(&#039;behavior-name&#039;, function(){ /*do something*/ });
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Since a behavior is being attached/detached to/from a context, the context object can be used to restrict your jQuery
+queries to only the affected element or DOM subtree, like this:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;javascript&quot;&gt;$(selector, context).doSomething();
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Putting all this together means the base pattern to process elements on page load should looks like this:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;javascript&quot;&gt;(function($) {
+  Drupal.behaviors.doSomething = {
+    attach: function(context, settings) {
+      $(&#039;div.something&#039;, context).once(&#039;do-something&#039;).doSomething({
+        param1: settings.somethingl.param,
+        param2: &#039;something else&#039;
+      });
+    }
+  }
+})(jQuery);
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;References:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;http://drupal.org/node/756722&quot;&gt;Managing JavaScript in Drupal 7&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://drupal.org/update/modules/6/7#drupal_behaviors&quot;&gt;Converting 6.x modules to 7.x - Changed Drupal.behaviors to objects having the properties &#039;attach&#039; and &#039;detach&#039;&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://api.drupal.org/api/drupal/includes!common.inc/function/drupal_add_js/7&quot;&gt;http://api.drupal.org/api/drupal/includes!common.inc/function/drupal_add_js/7&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://plugins.jquery.com/once/&quot;&gt;jQuery Once&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+            <pubDate>1384750800</pubDate>
+            <link>http://pbuyle.github.io/blog/2013/11/18/javascript-jquery-domready-drupal-7</link>
+            <guid isPermaLink="true">http://pbuyle.github.io/blog/2013/11/18/javascript-jquery-domready-drupal-7</guid>
+                                    <category domain="http://pbuyle.github.io/blog/tags">>drupal</category>
+                        <category domain="http://pbuyle.github.io/blog/tags">>drupal-7</category>
+                        <category domain="http://pbuyle.github.io/blog/tags">>javascript</category>
+                        <category domain="http://pbuyle.github.io/blog/tags">>jquery</category>
+                    </item>
+                <item>
             <title>Hello World</title>
             <description>&lt;p&gt;Welcome to my humble blog. It merely exists as a place where &lt;a href=&quot;http://about/me/pbuyle&quot;&gt;I&lt;/a&gt; hope to share some of the
 experiences and knowledge gathered developing software, mostly for web sites and mostly with
