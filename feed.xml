@@ -3,8 +3,8 @@
     <channel>
         <title><![CDATA[À moi la garde !]]></title>
         <description><![CDATA[]]></description>
-        <link></link>
-        <atom:link href="/feed.xml" rel="self" type="application/rss+xml" />
+        <link>http://pbuyle.github.io/</link>
+        <atom:link href="http://pbuyle.github.io//feed.xml" rel="self" type="application/rss+xml" />
                 <item>
             <title>Hello World</title>
             <description>&lt;p&gt;Welcome to my humble blog. It merely exists as a place where &lt;a href=&quot;http://about/me/pbuyle&quot;&gt;I&lt;/a&gt; hope to share some of the
@@ -12,8 +12,8 @@ experiences and knowledge gathered developing software, mostly for web sites and
 &lt;a href=&quot;http://drupal.org&quot;&gt;Drupal&lt;/a&gt;.&lt;/p&gt;
 </description>
             <pubDate>1384750800</pubDate>
-            <link>/blog/2013/11/18/hello-world</link>
-            <guid isPermaLink="true">/blog/2013/11/18/hello-world</guid>
+            <link>http://pbuyle.github.io//blog/2013/11/18/hello-world</link>
+            <guid isPermaLink="true">http://pbuyle.github.io//blog/2013/11/18/hello-world</guid>
                                 </item>
             </channel>
 </rss>
