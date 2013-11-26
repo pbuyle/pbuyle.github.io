@@ -6,6 +6,29 @@
         <link>http://pbuyle.github.io</link>
         <atom:link href="http://pbuyle.github.io/feed.xml" rel="self" type="application/rss+xml" />
                 <item>
+            <title>JavaScript ♥ Drupal</title>
+            <description>&lt;p&gt;On October 26th, at the the &lt;a href=&quot;http://www.drupalcampmontreal.com/&quot;&gt;Drupal Camp Montréal&lt;/a&gt;, I made a presentation on the
+usage of JavaScript in the context of a Drupal site. I think the presentation went fine, and it seems a few people in
+the audience enjoyed and, more importantly, learned something out of it.&lt;/p&gt;
+
+&lt;p&gt;The presentation is the result of all the feedbacks I got on the first public version of my previous post, originally
+written internally at &lt;a href=&quot;http://pheromone.ca&quot;&gt;Phéromone&lt;/a&gt; and then &lt;a href=&quot;https://coderwall.com/p/kd-4cg&quot;&gt;shared on corderwall&lt;/a&gt;.
+Since all the developers working with Drupal who read it told nme they learned something from it, I figured way too much
+developers don&#039;t known about what I think are the basics of working with JavaScript in Drupal.&lt;/p&gt;
+
+&lt;p&gt;The slides for this presentation are, since a few weeks, available online at &lt;a href=&quot;http://pbuyle.github.io/dcmtl-javascript&quot;&gt;http://pbuyle.github.io/dcmtl-javascript&lt;/a&gt;.&lt;/p&gt;
+</description>
+            <pubDate>1385269200</pubDate>
+            <link>http://pbuyle.github.io/blog/2013/11/24/javascript-drupal-drupalcamp-montreal</link>
+            <guid isPermaLink="true">http://pbuyle.github.io/blog/2013/11/24/javascript-drupal-drupalcamp-montreal</guid>
+                                    <category domain="http://pbuyle.github.io/blog/tags">>drupal</category>
+                        <category domain="http://pbuyle.github.io/blog/tags">>drupal-7</category>
+                        <category domain="http://pbuyle.github.io/blog/tags">>javascript</category>
+                        <category domain="http://pbuyle.github.io/blog/tags">>jquery</category>
+                        <category domain="http://pbuyle.github.io/blog/tags">>drupalcamp</category>
+                        <category domain="http://pbuyle.github.io/blog/tags">>presentation</category>
+                    </item>
+                <item>
             <title>JavaScript, jQuery and DOM Ready in Drupal 7</title>
             <description>&lt;p&gt;&lt;strong&gt;tl;dr&lt;/strong&gt;: JavaScript code to process elements on page load on a Drupal 7 site should looks like this:&lt;/p&gt;
 
