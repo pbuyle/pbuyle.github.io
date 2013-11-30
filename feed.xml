@@ -6,6 +6,89 @@
         <link>http://pbuyle.github.io</link>
         <atom:link href="http://pbuyle.github.io/feed.xml" rel="self" type="application/rss+xml" />
                 <item>
+            <title>NES USB Joystick Adapter with Digispark</title>
+            <description>&lt;p&gt;The &lt;a href=&quot;http://digistump.com/products/1&quot;&gt;Digispark&lt;/a&gt; is a tiny Arduino compatible (with restrictions) USB enabled
+development board. A while ago I baked their
+&lt;a href=&quot;http://www.kickstarter.com/projects/digistump/digispark-the-tiny-arduino-enabled-usb-dev-board&quot;&gt;Kickstarter campaign&lt;/a&gt;
+but didn&#039;t made anything with my Digisparks until this week. I finally tried to connect one to another item I bough long
+ago, an original &lt;a href=&quot;https://en.wikipedia.org/wiki/Nintendo_Entertainment_System&quot;&gt;NES&lt;/a&gt; controller.&lt;/p&gt;
+
+&lt;p&gt;Consuming a NES controller with an Arduino is actually easy, a quick googling returns tons of working code. There is
+even an &lt;a href=&quot;https://code.google.com/p/nespad/&quot;&gt;Arduino library&lt;/a&gt; which looks like it could work on a Digispark.  Exposing the
+the Digispark as an USB Joystick is even easier, thanks to the DigiJoystick library which is itself based on the well
+known &lt;a href=&quot;http://code.google.com/p/vusb-for-arduino/&quot;&gt;V-USB&lt;/a&gt; (if you ever googled the &quot;&lt;em&gt;arduino usb&lt;/em&gt;&quot; keywords, then you&#039;ve
+already encountered v-usb).&lt;/p&gt;
+
+&lt;p&gt;I ended with the following code, which seems to do the job. Unfortunately, my NES controller revealed itself to be
+broken, the &lt;em&gt;left&lt;/em&gt; button is always seen as pressed except when &lt;em&gt;down&lt;/em&gt; is pressed.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;c&quot;&gt;#include &quot;DigiJoystick.h&quot;
+
+#define LATCH   1
+#define CLOCK   2
+#define DATA    5
+#define UP      B00001000
+#define DOWN    B00000100
+#define LEFT    B00000010
+#define RIGHT   B00000001
+#define BUTTONS B11110000
+
+byte state = 0;
+
+void setup() {
+  pinMode(LATCH,OUTPUT);
+  pinMode(CLOCK,OUTPUT);
+  pinMode(DATA,INPUT);
+
+  digitalWrite(LATCH,HIGH);
+  digitalWrite(CLOCK,HIGH);
+}
+
+void loop() {
+  // Read controller&#039;s state
+  state = 0;
+  digitalWrite(LATCH,LOW);
+  digitalWrite(CLOCK,LOW);
+  digitalWrite(LATCH,HIGH);
+  delayMicroseconds(2);
+  digitalWrite(LATCH,LOW);
+  state = ~digitalRead(DATA);
+  for (int i = 1; i &amp;lt;= 7; i ++) {
+    digitalWrite(CLOCK,HIGH);
+    delayMicroseconds(2);
+    state = state &amp;lt;&amp;lt; 1;
+    state = state + ~digitalRead(DATA) ;
+    delayMicroseconds(4);
+    digitalWrite(CLOCK,LOW);
+  }
+  // set USB Joystick state.
+  DigiJoystick.setY((byte)127);
+  if (state &amp;amp; UP) {
+    DigiJoystick.setY((byte)0);
+  }
+  if (state &amp;amp; DOWN) {
+    DigiJoystick.setY((byte)255);
+  }
+  DigiJoystick.setX((byte)127);
+  if (state &amp;amp; LEFT) {
+    DigiJoystick.setX((byte)0);
+  }
+  if (state &amp;amp; RIGHT) {
+    DigiJoystick.setX((byte)255);
+  }
+  DigiJoystick.setButtons((char)((states&amp;gt;&amp;gt;4) &amp;amp; BUTTONS), (char) 0);
+  DigiJoystick.delay(10);
+}
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+            <pubDate>1385787600</pubDate>
+            <link>http://pbuyle.github.io/blog/2013/11/30/nes-digispark-usb-joystick</link>
+            <guid isPermaLink="true">http://pbuyle.github.io/blog/2013/11/30/nes-digispark-usb-joystick</guid>
+                                    <category domain="http://pbuyle.github.io/blog/tags">>nes</category>
+                        <category domain="http://pbuyle.github.io/blog/tags">>digispark</category>
+                        <category domain="http://pbuyle.github.io/blog/tags">>arduino</category>
+                    </item>
+                <item>
             <title>JavaScript ♥ Drupal</title>
             <description>&lt;p&gt;On October 26th, at the the &lt;a href=&quot;http://www.drupalcampmontreal.com/&quot;&gt;Drupal Camp Montréal&lt;/a&gt;, I made a presentation on the
 usage of JavaScript in the context of a Drupal site. I think the presentation went fine, and it seems a few people in

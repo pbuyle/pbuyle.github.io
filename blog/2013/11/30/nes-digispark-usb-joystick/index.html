@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Tags &mdash; À moi la garde ! &mdash; </title>
+        <title>NES USB Joystick Adapter with Digispark &mdash; À moi la garde ! &mdash; </title>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link href="http://pbuyle.github.io/css/solarized-light-bootstrap.min.css" rel="stylesheet" type="text/css" />
@@ -45,20 +45,93 @@
         </header>
         <div class="mainContent container">
             <div class="col-md-12">
-                <header class="page-header">
-    <h1>Tags</h1>
-</header>
-<div>
-<a href="http://pbuyle.github.io/blog/tags/nes"><span class="glyphicon glyphicon-tag"></span>&nbsp;nes <span class="badge">1</span></a>&nbsp;
-<a href="http://pbuyle.github.io/blog/tags/digispark"><span class="glyphicon glyphicon-tag"></span>&nbsp;digispark <span class="badge">1</span></a>&nbsp;
-<a href="http://pbuyle.github.io/blog/tags/arduino"><span class="glyphicon glyphicon-tag"></span>&nbsp;arduino <span class="badge">1</span></a>&nbsp;
-<a href="http://pbuyle.github.io/blog/tags/drupal"><span class="glyphicon glyphicon-tag"></span>&nbsp;drupal <span class="badge">2</span></a>&nbsp;
-<a href="http://pbuyle.github.io/blog/tags/drupal-7"><span class="glyphicon glyphicon-tag"></span>&nbsp;drupal-7 <span class="badge">2</span></a>&nbsp;
-<a href="http://pbuyle.github.io/blog/tags/javascript"><span class="glyphicon glyphicon-tag"></span>&nbsp;javascript <span class="badge">2</span></a>&nbsp;
-<a href="http://pbuyle.github.io/blog/tags/jquery"><span class="glyphicon glyphicon-tag"></span>&nbsp;jquery <span class="badge">2</span></a>&nbsp;
-<a href="http://pbuyle.github.io/blog/tags/drupalcamp"><span class="glyphicon glyphicon-tag"></span>&nbsp;drupalcamp <span class="badge">1</span></a>&nbsp;
-<a href="http://pbuyle.github.io/blog/tags/presentation"><span class="glyphicon glyphicon-tag"></span>&nbsp;presentation <span class="badge">1</span></a>&nbsp;
-</div>            </div>
+                    <article>
+        <header class="page-header">
+            <h1>NES USB Joystick Adapter with Digispark <small><span class="glyphicon glyphicon-file"></span>post</small></h1>
+        </header>
+
+                <p class="pull-right tags">
+            <span class="glyphicon glyphicon-tags"></span>&nbsp;
+                        <a href="http://pbuyle.github.io/blog/tags/nes">nes</a>,                         <a href="http://pbuyle.github.io/blog/tags/digispark">digispark</a>,                         <a href="http://pbuyle.github.io/blog/tags/arduino">arduino</a>                    </p>
+        
+        <div>
+            <p>The <a href="http://digistump.com/products/1">Digispark</a> is a tiny Arduino compatible (with restrictions) USB enabled
+development board. A while ago I baked their
+<a href="http://www.kickstarter.com/projects/digistump/digispark-the-tiny-arduino-enabled-usb-dev-board">Kickstarter campaign</a>
+but didn't made anything with my Digisparks until this week. I finally tried to connect one to another item I bough long
+ago, an original <a href="https://en.wikipedia.org/wiki/Nintendo_Entertainment_System">NES</a> controller.</p>
+
+<p>Consuming a NES controller with an Arduino is actually easy, a quick googling returns tons of working code. There is
+even an <a href="https://code.google.com/p/nespad/">Arduino library</a> which looks like it could work on a Digispark.  Exposing the
+the Digispark as an USB Joystick is even easier, thanks to the DigiJoystick library which is itself based on the well
+known <a href="http://code.google.com/p/vusb-for-arduino/">V-USB</a> (if you ever googled the "<em>arduino usb</em>" keywords, then you've
+already encountered v-usb).</p>
+
+<p>I ended with the following code, which seems to do the job. Unfortunately, my NES controller revealed itself to be
+broken, the <em>left</em> button is always seen as pressed except when <em>down</em> is pressed.</p>
+
+<pre><code class="c">#include "DigiJoystick.h"
+
+#define LATCH   1
+#define CLOCK   2
+#define DATA    5
+#define UP      B00001000
+#define DOWN    B00000100
+#define LEFT    B00000010
+#define RIGHT   B00000001
+#define BUTTONS B11110000
+
+byte state = 0;
+
+void setup() {
+  pinMode(LATCH,OUTPUT);
+  pinMode(CLOCK,OUTPUT);
+  pinMode(DATA,INPUT);
+
+  digitalWrite(LATCH,HIGH);
+  digitalWrite(CLOCK,HIGH);
+}
+
+void loop() {
+  // Read controller's state
+  state = 0;
+  digitalWrite(LATCH,LOW);
+  digitalWrite(CLOCK,LOW);
+  digitalWrite(LATCH,HIGH);
+  delayMicroseconds(2);
+  digitalWrite(LATCH,LOW);
+  state = ~digitalRead(DATA);
+  for (int i = 1; i &lt;= 7; i ++) {
+    digitalWrite(CLOCK,HIGH);
+    delayMicroseconds(2);
+    state = state &lt;&lt; 1;
+    state = state + ~digitalRead(DATA) ;
+    delayMicroseconds(4);
+    digitalWrite(CLOCK,LOW);
+  }
+  // set USB Joystick state.
+  DigiJoystick.setY((byte)127);
+  if (state &amp; UP) {
+    DigiJoystick.setY((byte)0);
+  }
+  if (state &amp; DOWN) {
+    DigiJoystick.setY((byte)255);
+  }
+  DigiJoystick.setX((byte)127);
+  if (state &amp; LEFT) {
+    DigiJoystick.setX((byte)0);
+  }
+  if (state &amp; RIGHT) {
+    DigiJoystick.setX((byte)255);
+  }
+  DigiJoystick.setButtons((char)((states&gt;&gt;4) &amp; BUTTONS), (char) 0);
+  DigiJoystick.delay(10);
+}
+</code></pre>
+
+        </div>
+    </article>
+            </div>
         </div>
         <footer class="container">
             <div class="col-md-9">Powered by <a href="https://sculpin.io">Sculpin</a> - Hosted on <a href="http://pages.github.com/">Github</a> - &copy; <a href="http://about.me/pbuyle">Pierre Buyle</a></small></div>
@@ -79,5 +152,19 @@
         </script>
                 <script src="http://pbuyle.github.io/components/highlightjs/highlight.pack.js"></script>
         <script>hljs.initHighlightingOnLoad();</script>
+                <!-- AddThis Smart Layers BEGIN -->
+        <!-- Go to http://www.addthis.com/get/smart-layers to customize -->
+        <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=mongolito404"></script>
+        <script type="text/javascript">
+            addthis.layers({
+                'theme' : 'transparent',
+                'share' : {
+                    'position' : 'left',
+                    'numPreferredServices' : 5
+                },
+                'thankyou' : false
+            });
+        </script>
+        <!-- AddThis Smart Layers END -->
             </body>
 </html>
