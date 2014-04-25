@@ -16,6 +16,9 @@ use:
     <article>
         <header class="page-header">
             <h2><a href="{{ site.url }}{{ post.url }}">{{ post.title }}</a></h2>
+            <time datetime="{{ page.date|date('c') }}" pubdate>
+                <span class='month'>{{ page.date|date('M') }}</span> <span class='day'>{{ page.date|date('jS') }}</span> <span class='year'>{{ page.date|date('Y') }}</span>
+            </time>
         </header>
         {% if post.meta.tags %}
         <p class="pull-right tags">
