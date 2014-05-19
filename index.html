@@ -53,8 +53,8 @@
     <article>
         <header class="page-header">
             <h2><a href="http://pbuyle.github.io/blog/2014/04/24/behat-steps-definition-to-verify-visibility-of-Drupal-form-elements">Behat step-definition to verify visibility (not just presence) of Drupal form elements.</a></h2>
-            <time datetime="2014-04-24T22:35:56-04:00" pubdate>
-                <span class='month'>Apr</span> <span class='day'>24th</span> <span class='year'>2014</span>
+            <time datetime="2014-05-19T09:58:40-04:00" pubdate>
+                <span class='month'>May</span> <span class='day'>19th</span> <span class='year'>2014</span>
             </time>
         </header>
                 <p class="pull-right tags">
@@ -92,8 +92,8 @@ type (ie. the Drupal form API <code>#type</code>) of a form element.</p>
     <article>
         <header class="page-header">
             <h2><a href="http://pbuyle.github.io/blog/2013/11/30/nes-digispark-usb-joystick">NES USB Joystick Adapter with Digispark</a></h2>
-            <time datetime="2014-04-24T22:35:56-04:00" pubdate>
-                <span class='month'>Apr</span> <span class='day'>24th</span> <span class='year'>2014</span>
+            <time datetime="2014-05-19T09:58:40-04:00" pubdate>
+                <span class='month'>May</span> <span class='day'>19th</span> <span class='year'>2014</span>
             </time>
         </header>
                 <p class="pull-right tags">
@@ -179,8 +179,8 @@ void loop() {
     <article>
         <header class="page-header">
             <h2><a href="http://pbuyle.github.io/blog/2013/11/24/javascript-drupal-drupalcamp-montreal">JavaScript ♥ Drupal</a></h2>
-            <time datetime="2014-04-24T22:35:56-04:00" pubdate>
-                <span class='month'>Apr</span> <span class='day'>24th</span> <span class='year'>2014</span>
+            <time datetime="2014-05-19T09:58:40-04:00" pubdate>
+                <span class='month'>May</span> <span class='day'>19th</span> <span class='year'>2014</span>
             </time>
         </header>
                 <p class="pull-right tags">
@@ -203,8 +203,8 @@ developers don't known about what I think are the basics of working with JavaScr
     <article>
         <header class="page-header">
             <h2><a href="http://pbuyle.github.io/blog/2013/11/18/javascript-jquery-domready-drupal-7">JavaScript, jQuery and DOM Ready in Drupal 7</a></h2>
-            <time datetime="2014-04-24T22:35:56-04:00" pubdate>
-                <span class='month'>Apr</span> <span class='day'>24th</span> <span class='year'>2014</span>
+            <time datetime="2014-05-19T09:58:40-04:00" pubdate>
+                <span class='month'>May</span> <span class='day'>19th</span> <span class='year'>2014</span>
             </time>
         </header>
                 <p class="pull-right tags">
@@ -227,10 +227,10 @@ developers don't known about what I think are the basics of working with JavaScr
 
 <p>Drupal 7 provides jQuery in the <a href="http://api.jquery.com/jQuery.noConflict/">no-conflict mode</a>, which means that <code>$</code> is
 not the jQuery object/namespace. This should not be an issue with properly written jQuery plugins that follow
-<a href="http://docs.jquery.com/Plugins/Authoring">jQuery's plugins authoring guidelines</a>. This is however an issue for code
-snippets mindlessly copy/pasted from random web pages. Most of them expect <code>$</code> to be the jQuery namespace and will not
-work within a Drupal page. This can be easily solved by wrapping theses snippets in immediately invoked anonymous
-function that will alias the jQuery namespace to <code>$</code>:</p>
+<a href="http://learn.jquery.com/plugins/basic-plugin-creation/#protecting-the-alias-and-adding-scope">jQuery's plugins authoring documentation</a>.
+This is however an issue for code snippets mindlessly copy/pasted from random web pages. Most of them expect <code>$</code> to be
+the jQuery namespace and will not work within a Drupal page. This can be easily solved by wrapping theses snippets in
+immediately invoked anonymous function that will alias the jQuery namespace to <code>$</code>:</p>
 
 <pre><code class="javascript">(function($) {
     // Here $ is the jQuery namespace.
@@ -249,9 +249,9 @@ or <code>jQuery(document).ready()</code>:</p>
 added to the page after page load (AJAX calls, content generated from JavaScript, etc.) the code in such functions will
 never be able to process the added elements. Or if some portion of the content is removed or moved across the page, the
 code will have no option to unregistered event handlers or update information about the already processed elements.
-Drupal provides an API for this called <a href="http://drupal.org/node/756722#behaviors">behaviors</a>. Using behavior is not
-required, but strongly recommended as a best practice to avoid future headaches (when code written six months ago starts
-behaving strangely when a contrib module is added to the project). A behavior is written like this:</p>
+Drupal provides an API for this called <a href="https://drupal.org/node/304258#drupal-behaviors">behaviors</a>. Using behavior is
+not required, but strongly recommended as a best practice to avoid future headaches (when code written six months ago
+starts behaving strangely when a contrib module is added to the project). A behavior is written like this:</p>
 
 <pre><code class="javascript">Drupal.behaviors.behaviorName = {
   attach: function (context, settings) {
@@ -307,6 +307,7 @@ queries to only the affected element or DOM subtree, like this:</p>
 
 <ul>
 <li><a href="http://drupal.org/node/756722">Managing JavaScript in Drupal 7</a></li>
+<li><a href="https://drupal.org/node/121997">Working with JavaScript</a></li>
 <li><a href="http://drupal.org/update/modules/6/7#drupal_behaviors">Converting 6.x modules to 7.x - Changed Drupal.behaviors to objects having the properties 'attach' and 'detach'</a></li>
 <li><a href="http://api.drupal.org/api/drupal/includes!common.inc/function/drupal_add_js/7">http://api.drupal.org/api/drupal/includes!common.inc/function/drupal_add_js/7</a></li>
 <li><a href="http://plugins.jquery.com/once/">jQuery Once</a></li>
@@ -317,8 +318,8 @@ queries to only the affected element or DOM subtree, like this:</p>
     <article>
         <header class="page-header">
             <h2><a href="http://pbuyle.github.io/blog/2013/11/18/hello-world">Hello World</a></h2>
-            <time datetime="2014-04-24T22:35:56-04:00" pubdate>
-                <span class='month'>Apr</span> <span class='day'>24th</span> <span class='year'>2014</span>
+            <time datetime="2014-05-19T09:58:40-04:00" pubdate>
+                <span class='month'>May</span> <span class='day'>19th</span> <span class='year'>2014</span>
             </time>
         </header>
                 <div>
