@@ -1,5 +1,5 @@
 ---
-permalink: feed.xml
+permalink: drupal-feed.xml
 use:
   - posts
 ---
@@ -11,6 +11,7 @@ use:
         <link>{{ site.url }}</link>
         <atom:link href="{{ site.url }}/feed.xml" rel="self" type="application/rss+xml" />
         {% for post in data.posts %}
+        {% if 'drupal' in post.meta.tags %}
         <item>
             <title>{{ post.title }}</title>
             <description>{{ post.content }}</description>
@@ -24,6 +25,7 @@ use:
             <category domain="{{ site.url }}/blog/tags">>{{ tag }}</category>
             {% endfor %}
         </item>
+        {% endif %}
         {% endfor %}
     </channel>
 </rss>
