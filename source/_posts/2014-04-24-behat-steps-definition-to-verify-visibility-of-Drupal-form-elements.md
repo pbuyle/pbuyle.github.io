@@ -32,6 +32,3 @@ retrieve the form labels on the page. Once you have a form label element, you ca
 type (ie. the Drupal form API `#type`) of a form element.
 
 <script src="https://gist.github.com/pbuyle/7698675.js"></script>
-
-
-heavily relies on the default Drupal markup for form elements.
