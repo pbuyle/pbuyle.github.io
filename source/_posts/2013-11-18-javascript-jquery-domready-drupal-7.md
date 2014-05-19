@@ -24,10 +24,10 @@ tags:
 
 Drupal 7 provides jQuery in the [no-conflict mode](http://api.jquery.com/jQuery.noConflict/), which means that `$` is
 not the jQuery object/namespace. This should not be an issue with properly written jQuery plugins that follow
-[jQuery's plugins authoring guidelines](http://docs.jquery.com/Plugins/Authoring). This is however an issue for code
-snippets mindlessly copy/pasted from random web pages. Most of them expect `$` to be the jQuery namespace and will not
-work within a Drupal page. This can be easily solved by wrapping theses snippets in immediately invoked anonymous
-function that will alias the jQuery namespace to `$`:
+[jQuery's plugins authoring documentation](http://learn.jquery.com/plugins/basic-plugin-creation/#protecting-the-alias-and-adding-scope).
+This is however an issue for code snippets mindlessly copy/pasted from random web pages. Most of them expect `$` to be
+the jQuery namespace and will not work within a Drupal page. This can be easily solved by wrapping theses snippets in
+immediately invoked anonymous function that will alias the jQuery namespace to `$`:
 ~~~.javascript
 (function($) {
     // Here $ is the jQuery namespace.
@@ -46,9 +46,9 @@ When combined, these two patterns are perfectly fine, even within Drupal. Howeve
 added to the page after page load (AJAX calls, content generated from JavaScript, etc.) the code in such functions will
 never be able to process the added elements. Or if some portion of the content is removed or moved across the page, the
 code will have no option to unregistered event handlers or update information about the already processed elements.
-Drupal provides an API for this called [behaviors](http://drupal.org/node/756722#behaviors). Using behavior is not
-required, but strongly recommended as a best practice to avoid future headaches (when code written six months ago starts
-behaving strangely when a contrib module is added to the project). A behavior is written like this:
+Drupal provides an API for this called [behaviors](https://drupal.org/node/304258#drupal-behaviors). Using behavior is
+not required, but strongly recommended as a best practice to avoid future headaches (when code written six months ago
+starts behaving strangely when a contrib module is added to the project). A behavior is written like this:
 ~~~.javascript
 Drupal.behaviors.behaviorName = {
   attach: function (context, settings) {
@@ -102,6 +102,7 @@ Putting all this together means the base pattern to process elements on page loa
 References:
 
 - [Managing JavaScript in Drupal 7](http://drupal.org/node/756722)
+- [Working with JavaScript](https://drupal.org/node/121997)
 - [Converting 6.x modules to 7.x - Changed Drupal.behaviors to objects having the properties 'attach' and 'detach'](http://drupal.org/update/modules/6/7#drupal_behaviors)
 - [http://api.drupal.org/api/drupal/includes!common.inc/function/drupal_add_js/7](http://api.drupal.org/api/drupal/includes!common.inc/function/drupal_add_js/7)
 - [jQuery Once](http://plugins.jquery.com/once/)
